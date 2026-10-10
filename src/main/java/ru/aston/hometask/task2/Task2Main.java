@@ -12,10 +12,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Task2Main {
-    static final Path DATA_PAPTH = Path.of("src/main/resources/data.json");
+    static final Path DATA_PATH = Path.of("src/main/resources/data.json");
 
     public static void main(String[] args) {
-        if (!Files.exists(DATA_PAPTH)) writeJSON(createStudents());
+        if (!Files.exists(DATA_PATH)) writeJSON(createStudents());
         selectJSON(readJSON());
     }
 
@@ -40,7 +40,7 @@ public class Task2Main {
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.registerModule(new JavaTimeModule());
 
-        try (var is = Files.newInputStream(DATA_PAPTH)) {
+        try (var is = Files.newInputStream(DATA_PATH)) {
             return objectMapper.readValue(is, new TypeReference<List<Student>>() {});
         } catch (IOException e) {
             System.err.println("Error read file: " + e.getMessage());
@@ -54,7 +54,7 @@ public class Task2Main {
         objectMapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 
-        try (var os = Files.newOutputStream(DATA_PAPTH)) {
+        try (var os = Files.newOutputStream(DATA_PATH)) {
             objectMapper.writeValue(os, data);
         } catch (IOException e){
             System.err.println("Error write file:" + e.getMessage());
