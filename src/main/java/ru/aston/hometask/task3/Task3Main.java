@@ -1,0 +1,5 @@
+package ru.aston.hometask.task3;
+
+public class Task3Main {
+
+}
