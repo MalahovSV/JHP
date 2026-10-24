@@ -1,7 +1,5 @@
 package ru.aston.hometask.task3.patterns.strategy.ciphers;
 
-import ru.aston.hometask.task3.patterns.strategy.EncryptionStrategy;
-
 public class VigenereCipherStrategy implements EncryptionStrategy {
     private final String key;
 

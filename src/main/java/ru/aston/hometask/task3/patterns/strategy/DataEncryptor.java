@@ -1,6 +1,8 @@
 package ru.aston.hometask.task3.patterns.strategy;
 
 
+import ru.aston.hometask.task3.patterns.strategy.ciphers.EncryptionStrategy;
+
 public class DataEncryptor {
     private EncryptionStrategy strategy;
 

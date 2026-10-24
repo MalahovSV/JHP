@@ -1,7 +1,6 @@
 package ru.aston.hometask.task3.patterns.strategy.ciphers;
 
 
-import ru.aston.hometask.task3.patterns.strategy.EncryptionStrategy;
 import java.util.Base64;
 
 public class Base64Strategy implements EncryptionStrategy {

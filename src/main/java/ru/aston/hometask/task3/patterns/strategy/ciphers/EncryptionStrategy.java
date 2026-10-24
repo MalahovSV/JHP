@@ -1,4 +1,4 @@
-package ru.aston.hometask.task3.patterns.strategy;
+package ru.aston.hometask.task3.patterns.strategy.ciphers;
 
 public interface EncryptionStrategy {
     String encrypt(String data);

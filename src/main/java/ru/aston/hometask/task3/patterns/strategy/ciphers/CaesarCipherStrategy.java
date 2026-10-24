@@ -1,8 +1,6 @@
 package ru.aston.hometask.task3.patterns.strategy.ciphers;
 
 
-import ru.aston.hometask.task3.patterns.strategy.EncryptionStrategy;
-
 public class CaesarCipherStrategy implements EncryptionStrategy {
     private final int shift;
 
