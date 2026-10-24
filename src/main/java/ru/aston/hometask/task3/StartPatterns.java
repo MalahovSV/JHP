@@ -22,7 +22,7 @@ import java.util.List;
 public class StartPatterns {
     private final String SEPARATOR_LINE = "\n========================================================================\n";
 
-    public void startAllPatterns(){
+    public void startAllPatterns() {
         startBuilder();
         startStrategy();
         startProxy();
@@ -30,7 +30,7 @@ public class StartPatterns {
     }
 
 
-    public void startBuilder(){
+    public void startBuilder() {
         System.out.println(SEPARATOR_LINE);
         Director director = new Director();
         List<Object> warehouse = new ArrayList<>();
@@ -45,7 +45,7 @@ public class StartPatterns {
         warehouse.forEach(System.out::println);
     }
 
-    public void startStrategy(){
+    public void startStrategy() {
         String secretData = "For the Emperor!";
 
         System.out.println(SEPARATOR_LINE + "Оригинальные данные: " + secretData + "\n");
@@ -100,22 +100,16 @@ public class StartPatterns {
     public void startAdapter() {
         System.out.println(SEPARATOR_LINE);
 
-
         Director director = new Director();
         ComputerBuilder pcBuilder = new ComputerBuilder();
         director.makeDesktop(pcBuilder);
-        Computer pc = pcBuilder.build(); // Получили готовый ПК
-
-
-        Object device = pc;
-
+        Computer pc = pcBuilder.build();
 
         ExternalQrLibrary externalLib = new ExternalQrLibrary();
 
-
         LabelPrinter printer = new QrLabelAdapter(externalLib);
 
-        String qrCode = printer.printLabel(((Computer) device).getSerialNumber());
+        String qrCode = printer.printLabel(pc.getSerialNumber());
 
         System.out.println("Печать наклейки для устройства на складе:");
         System.out.println(qrCode);
