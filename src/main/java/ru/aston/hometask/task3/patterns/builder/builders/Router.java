@@ -21,6 +21,10 @@ public class Router {
         this.netConfig = netConfig;
     }
 
+    public String getSerialNumber() {
+        return serialNumber;
+    }
+
     @Override
     public String toString() {
         String configStr = (netConfig != null) ? netConfig.toString() : "не настроены";

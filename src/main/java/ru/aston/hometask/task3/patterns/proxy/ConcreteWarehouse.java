@@ -1,6 +1,7 @@
 package ru.aston.hometask.task3.patterns.proxy;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ConcreteWarehouse implements Warehouse {
@@ -20,6 +21,6 @@ public class ConcreteWarehouse implements Warehouse {
 
     @Override
     public List<Object> getDevices() {
-        return devices;
+        return List.copyOf(devices);
     }
 }

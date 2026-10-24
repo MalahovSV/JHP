@@ -1,6 +1,10 @@
 package ru.aston.hometask.task3;
 
+import ru.aston.hometask.task3.patterns.adapter.LabelPrinter;
+import ru.aston.hometask.task3.patterns.adapter.QrLabelAdapter;
+import ru.aston.hometask.task3.patterns.adapter.external.ExternalQrLibrary;
 import ru.aston.hometask.task3.patterns.builder.Director;
+import ru.aston.hometask.task3.patterns.builder.builders.Computer;
 import ru.aston.hometask.task3.patterns.builder.builders.ComputerBuilder;
 import ru.aston.hometask.task3.patterns.builder.builders.RouterBuilder;
 import ru.aston.hometask.task3.patterns.proxy.ConcreteWarehouse;
@@ -22,6 +26,7 @@ public class StartPatterns {
         startBuilder();
         startStrategy();
         startProxy();
+        startAdapter();
     }
 
 
@@ -61,6 +66,8 @@ public class StartPatterns {
         System.out.println("Зашифровано (Виженер): " + vigenereEncrypted);
         System.out.println("Расшифровано: " + encryptor.decrypt(vigenereEncrypted));
     }
+
+
     public void startProxy() {
         System.out.print(SEPARATOR_LINE);
 
@@ -88,4 +95,30 @@ public class StartPatterns {
         adminAccess.addDevice(router);
         adminAccess.showAllDevices();
     }
+
+
+    public void startAdapter() {
+        System.out.println(SEPARATOR_LINE);
+
+
+        Director director = new Director();
+        ComputerBuilder pcBuilder = new ComputerBuilder();
+        director.makeDesktop(pcBuilder);
+        Computer pc = pcBuilder.build(); // Получили готовый ПК
+
+
+        Object device = pc;
+
+
+        ExternalQrLibrary externalLib = new ExternalQrLibrary();
+
+
+        LabelPrinter printer = new QrLabelAdapter(externalLib);
+
+        String qrCode = printer.printLabel(((Computer) device).getSerialNumber());
+
+        System.out.println("Печать наклейки для устройства на складе:");
+        System.out.println(qrCode);
+    }
+
 }
