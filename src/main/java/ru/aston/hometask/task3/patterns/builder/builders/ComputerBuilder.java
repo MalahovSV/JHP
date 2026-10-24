@@ -26,7 +26,6 @@ public class ComputerBuilder implements DeviceBuilder {
     @Override public void setCreationDate(Date date) { this.creationDate = date; }
     @Override public void setPrice(BigDecimal price) { this.price = price; }
 
-    // ПЕРЕОПРЕДЕЛЯЕМ метод из интерфейса
     @Override
     public void setNetConfig(NetConfig netConfig) {
         this.netConfig = netConfig;

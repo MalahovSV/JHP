@@ -11,7 +11,7 @@ public class Router {
     private final Date creationDate;
     private final BigDecimal price;
     private final RouterType type;
-    private final NetConfig netConfig; // <--- ДОБАВИЛИ
+    private final NetConfig netConfig;
 
     public Router(String serialNumber, Date creationDate, BigDecimal price, RouterType type, NetConfig netConfig) {
         this.serialNumber = serialNumber;
