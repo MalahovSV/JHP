@@ -31,4 +31,8 @@ public class Computer {
         return String.format("[%s] S/N: %s | Цена: %s | Дата: %s | Сеть: %s",
                 type.getDescription(), serialNumber, price, creationDate, configStr);
     }
+
+    public BigDecimal getPrice() {
+        return price;
+    }
 }
