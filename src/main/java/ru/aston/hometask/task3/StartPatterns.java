@@ -1,146 +1,29 @@
 package ru.aston.hometask.task3;
 
-import ru.aston.hometask.task3.patterns.adapter.LabelPrinter;
-import ru.aston.hometask.task3.patterns.adapter.QrLabelAdapter;
-import ru.aston.hometask.task3.patterns.adapter.external.ExternalQrLibrary;
-import ru.aston.hometask.task3.patterns.builder.Director;
-import ru.aston.hometask.task3.patterns.builder.builders.Computer;
-import ru.aston.hometask.task3.patterns.builder.builders.ComputerBuilder;
-import ru.aston.hometask.task3.patterns.builder.builders.RouterBuilder;
-import ru.aston.hometask.task3.patterns.decorator.BorderReportDecorator;
-import ru.aston.hometask.task3.patterns.decorator.Report;
-import ru.aston.hometask.task3.patterns.decorator.SimpleReport;
-import ru.aston.hometask.task3.patterns.decorator.TotalPriceReportDecorator;
-import ru.aston.hometask.task3.patterns.proxy.ConcreteWarehouse;
-import ru.aston.hometask.task3.patterns.proxy.UserRole;
-import ru.aston.hometask.task3.patterns.proxy.Warehouse;
-import ru.aston.hometask.task3.patterns.proxy.WarehouseProxy;
-import ru.aston.hometask.task3.patterns.strategy.DataEncryptor;
-import ru.aston.hometask.task3.patterns.strategy.ciphers.Base64Strategy;
-import ru.aston.hometask.task3.patterns.strategy.ciphers.CaesarCipherStrategy;
-import ru.aston.hometask.task3.patterns.strategy.ciphers.VigenereCipherStrategy;
+import ru.aston.hometask.task3.demos.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class StartPatterns {
     private final String SEPARATOR_LINE = "\n========================================================================\n";
+    private final List<Runnable> exampleDemos = new ArrayList<>();
 
     public void startAllPatterns() {
-        startBuilder();
-        startStrategy();
-        startProxy();
-        startAdapter();
-        startDecorator();
+        addPatternsInCollection();
+        for (Runnable pattern : exampleDemos){
+            System.out.println(SEPARATOR_LINE);
+            pattern.run();
+        }
     }
 
-
-    public void startBuilder() {
-        System.out.println(SEPARATOR_LINE);
-        Director director = new Director();
-        List<Object> warehouse = new ArrayList<>();
-
-        ComputerBuilder pcBuilder = new ComputerBuilder();
-        director.makeDesktop(pcBuilder);
-        warehouse.add(pcBuilder.build());
-
-        RouterBuilder routerBuilder = new RouterBuilder();
-        director.makeRouter(routerBuilder);
-        warehouse.add(routerBuilder.build());
-        warehouse.forEach(System.out::println);
+    private void addPatternsInCollection(){
+        exampleDemos.add(new BuilderDemo()::run);
+        exampleDemos.add(new StrategyDemo()::run);
+        exampleDemos.add(new ProxyDemo()::run);
+        exampleDemos.add(new DecoratorDemo()::run);
+        exampleDemos.add(new AdapterDemo()::run);
+        exampleDemos.add(new ChainDemo()::run);
     }
-
-    public void startStrategy() {
-        String secretData = "For the Emperor!";
-
-        System.out.println(SEPARATOR_LINE + "Оригинальные данные: " + secretData + "\n");
-
-        DataEncryptor encryptor = new DataEncryptor(new Base64Strategy());
-
-        String base64Encrypted = encryptor.encrypt(secretData);
-        System.out.println("Зашифровано (Base64): " + base64Encrypted);
-        System.out.println("Расшифровано: " + encryptor.decrypt(base64Encrypted) + "\n");
-
-        encryptor.setStrategy(new CaesarCipherStrategy(3));
-        String caesarEncrypted = encryptor.encrypt(secretData);
-        System.out.println("Зашифровано (Цезарь): " + caesarEncrypted);
-        System.out.println("Расшифровано: " + encryptor.decrypt(caesarEncrypted) + "\n");
-
-        encryptor.setStrategy(new VigenereCipherStrategy("astra"));
-        String vigenereEncrypted = encryptor.encrypt(secretData);
-        System.out.println("Зашифровано (Виженер): " + vigenereEncrypted);
-        System.out.println("Расшифровано: " + encryptor.decrypt(vigenereEncrypted));
-    }
-
-
-    public void startProxy() {
-        System.out.print(SEPARATOR_LINE);
-
-        ConcreteWarehouse concreteWarehouse = new ConcreteWarehouse();
-
-        Director director = new Director();
-
-        ComputerBuilder pcBuilder = new ComputerBuilder();
-        director.makeDesktop(pcBuilder);
-        Object pc = pcBuilder.build();
-
-        RouterBuilder routerBuilder = new RouterBuilder();
-        director.makeRouter(routerBuilder);
-        Object router = routerBuilder.build();
-
-        System.out.println("Authorization: " + UserRole.GUEST.getDescription());
-        Warehouse guestAccess = new WarehouseProxy(concreteWarehouse, UserRole.GUEST);
-        guestAccess.addDevice(pc);
-        guestAccess.addDevice(router);
-        guestAccess.showAllDevices();
-
-        System.out.println("Authorization: " + UserRole.ADMIN.getDescription());
-        Warehouse adminAccess = new WarehouseProxy(concreteWarehouse, UserRole.ADMIN);
-        adminAccess.addDevice(pc);
-        adminAccess.addDevice(router);
-        adminAccess.showAllDevices();
-    }
-
-
-    public void startAdapter() {
-        System.out.println(SEPARATOR_LINE);
-
-        Director director = new Director();
-        ComputerBuilder pcBuilder = new ComputerBuilder();
-        director.makeDesktop(pcBuilder);
-        Computer pc = pcBuilder.build();
-
-        ExternalQrLibrary externalLib = new ExternalQrLibrary();
-
-        LabelPrinter printer = new QrLabelAdapter(externalLib);
-
-        String qrCode = printer.printLabel(pc.getSerialNumber());
-
-        System.out.println("Печать наклейки для устройства на складе:");
-        System.out.println(qrCode);
-    }
-
-    public void startDecorator() {
-        System.out.println(SEPARATOR_LINE);
-
-        Director director = new Director();
-        ComputerBuilder pcBuilder = new ComputerBuilder();
-        director.makeDesktop(pcBuilder);
-        Computer pc = pcBuilder.build();
-
-        Report report = new SimpleReport(pc);
-        System.out.println("1. Базовый отчет:");
-        System.out.println(report.format());
-
-        report = new BorderReportDecorator(report);
-        System.out.println("\n2. Отчет с рамкой:");
-        System.out.println(report.format());
-
-        report = new TotalPriceReportDecorator(report, pc);
-        System.out.println("\n3. Полный отчет (Рамка + Итог):");
-        System.out.println(report.format());
-    }
-
-
-
 }
