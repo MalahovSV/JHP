@@ -37,7 +37,4 @@ public class DeadLock implements DemoWorkThread {
         printerTwo.start();
     }
 
-    public void printNumberFromThread(int number){
-        System.out.printf("[%s]:\t %d\n", Thread.currentThread().getName(), number);
-    }
 }
